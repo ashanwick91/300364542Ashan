@@ -14,6 +14,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * GitHub Link: https://github.com/ashanwick91/300364542Ashan
+ */
 @Controller
 @SessionAttributes({"id"})
 public class SalesController {
