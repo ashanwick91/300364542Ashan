@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        .pre-scrollable {
+            overflow-y: scroll;
+        }
+
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h2>Sales Summary Table</h2>
+
+<h2 th:text="${errorMessage}" id="error"></h2>
+<div class="container mt-2 bg-primary bg-info">
+    <form method="post" th:action="@{save}" onsubmit="return validateForm()">
+        <label for="name">Salesman Name:</label>
+        <input type="text" name="name" id="name">
+
+        <label for="item">Item Type:</label>
+        <select id="item" name="item">
+            <option value="Washing Machine">Washing Machine</option>
+            <option value="Refrigerator">Refrigerator</option>
+            <option value="Music System">Music System</option>
+        </select>
+
+        <label for="amount">Sales Amount:</label>
+        <input type="number" name="amount" id="amount" th:value="0.0">
+
+        <label for="dot">Transaction Date:</label>
+        <input type="date" name="dot" id="dot">
+
+        <br>
+        <br>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn-primary">Save</button>
+        </div>
+    </form>
+</div>
+<div class="container mt-2 pre-scrollable">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Transaction Code</th>
+            <th>Salesman</th>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Transaction Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s:${salesmanList}">
+            <td th:text="${s.getId()}"></td>
+            <td th:text="${s.getName()}"></td>
+            <td th:text="${s.getItem()}"></td>
+            <td th:text="${s.getAmount()}"></td>
+            <td th:text="${s.getDot()}"></td>
+            <td>
+                <a class="btn btn-danger"
+                   onclick="return confirm('Are you sure you want to delete the record?')"
+                   th:href="@{delete(id=${s.getId()})}">Delete</a>
+            </td>
+            <td>
+                <a class="btn btn-success" th:href="@{edit(id=${s.getId()})}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    document.getElementById("dot").valueAsDate = new Date();
+
+    function validateForm() {
+        var amount = document.getElementById("amount").value;
+        var name = document.getElementById("name").value;
+        if (amount < 1) {
+            alert("Sales cannot be 0");
+            return false;
+        } else if (name == "") {
+            alert("Salesman Name cannot be empty");
+            return false;
+        }
+    }
+</script>
+</html>
